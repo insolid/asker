@@ -1,7 +1,9 @@
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
-from typing import Annotated
 from collections.abc import AsyncGenerator
+from typing import Annotated
+
 from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
 from .config import settings
 
 engine = create_async_engine(str(settings.postgres_dsn))

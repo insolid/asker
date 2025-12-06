@@ -1,8 +1,12 @@
+from pydantic import PostgresDsn, computed_field
 from pydantic_settings import BaseSettings
-from pydantic import computed_field, PostgresDsn
 
 
 class Settings(BaseSettings):
+    jwt_secret_key: str
+    jwt_expire_minutes: int
+    jwt_algorithm: str
+
     postgres_user: str
     postgres_password: str
     postgres_db: str
