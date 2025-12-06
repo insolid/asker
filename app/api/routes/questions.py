@@ -1,12 +1,14 @@
-from fastapi import APIRouter, HTTPException, Depends
-from app.schemas.questions import QuestionRead, QuestionCreate, QuestionReadShort
-from app.core.db import SessionDep
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
-from sqlalchemy.orm import selectinload
+
+from app.core.db import SessionDep
 from app.models.questions import Question
+from app.schemas.questions import QuestionCreate, QuestionRead, QuestionReadShort
+
 from ..deps.auth import CurrentUserDep
 from ..deps.questions import QuestionByIDFromUrl
-from typing import Annotated
 
 router = APIRouter(prefix="/questions", tags=["questions"])
 
@@ -17,7 +19,7 @@ async def list_questions(db: SessionDep):
 
 
 @router.get("/{id}", response_model=QuestionRead)
-async def retrieve_question(
+async def get_question(
     question: Annotated[Question, Depends(QuestionByIDFromUrl(Question.answers))],
 ):
     return question
