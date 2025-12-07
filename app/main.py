@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.api.routes import auth, questions, users, answers
+from app.api.routes import answers, auth, questions, users
 
 app = FastAPI()
 

@@ -13,19 +13,21 @@ from ..deps.questions import QuestionByIDFromUrl
 router = APIRouter(prefix="/questions", tags=["questions"])
 
 
-@router.get("/", response_model=list[QuestionReadShort])
+@router.get("/", response_model=list[QuestionReadShort], name="list_questions")
 async def list_questions(db: SessionDep):
     return await db.scalars(select(Question))
 
 
-@router.get("/{id}", response_model=QuestionRead)
+@router.get("/{id}", response_model=QuestionRead, name="get_question")
 async def get_question(
     question: Annotated[Question, Depends(QuestionByIDFromUrl(Question.answers))],
 ):
     return question
 
 
-@router.post("/", response_model=QuestionReadShort)
+@router.post(
+    "/", response_model=QuestionReadShort, name="create_question", status_code=201
+)
 async def create_question(
     db: SessionDep, question_data: QuestionCreate, cur_user: CurrentUserDep
 ):
@@ -35,7 +37,7 @@ async def create_question(
     return question
 
 
-@router.delete("/{id}", response_model=QuestionReadShort)
+@router.delete("/{id}", response_model=QuestionReadShort, name="delete_question")
 async def delete_question(
     cur_user: CurrentUserDep,
     question: Annotated[Question, Depends(QuestionByIDFromUrl())],

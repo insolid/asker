@@ -14,12 +14,12 @@ from ..deps.questions import QuestionByIDFromUrl
 router = APIRouter(prefix="", tags=["answers"])
 
 
-@router.get("/answers/{id}", response_model=AnswerRead)
+@router.get("/answers/{id}", response_model=AnswerRead, name="get_answer")
 async def get_answer(answer: Annotated[Answer, Depends(get_answer_by_id_from_url)]):
     return answer
 
 
-@router.delete("/answers/{id}", response_model=AnswerRead)
+@router.delete("/answers/{id}", response_model=AnswerRead, name="delete_answer")
 async def delete_answer(
     answer: Annotated[Answer, Depends(get_answer_by_id_from_url)],
     db: SessionDep,
@@ -32,7 +32,12 @@ async def delete_answer(
     return answer
 
 
-@router.post("/questions/{id}/answers", response_model=AnswerRead)
+@router.post(
+    "/questions/{id}/answers",
+    response_model=AnswerRead,
+    name="create_answer",
+    status_code=201,
+)
 async def create_answer(
     question: Annotated[Question, Depends(QuestionByIDFromUrl())],
     db: SessionDep,
